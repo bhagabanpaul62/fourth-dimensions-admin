@@ -16,6 +16,7 @@ import { testimonialSchema } from '@/lib/schemas';
 import type { Testimonial } from '@/lib/types';
 import { useToast } from '@/hooks/use-toast';
 import { Switch } from '@/components/ui/switch';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 type TestimonialFormValues = z.infer<typeof testimonialSchema>;
 
@@ -30,15 +31,20 @@ export function TestimonialForm({ initialData }: TestimonialFormProps) {
 
   const form = useForm<TestimonialFormValues>({
     resolver: zodResolver(testimonialSchema),
-    defaultValues: initialData || {
-      clientName: '',
-      location: '',
-      content: '',
-      imageUrl: '',
-      videoUrl: '',
-      displayOrder: 0,
-      isActive: true,
-    },
+    defaultValues: initialData
+      ? {
+          ...initialData,
+          mediaUrl: initialData.mediaUrl || '',
+        }
+      : {
+          clientName: '',
+          location: '',
+          content: '',
+          mediaType: undefined,
+          mediaUrl: '',
+          displayOrder: 0,
+          isActive: true,
+        },
   });
 
   const onSubmit = (values: TestimonialFormValues) => {
@@ -51,8 +57,9 @@ export function TestimonialForm({ initialData }: TestimonialFormProps) {
       router.push(`/testimonials`);
     });
   };
-  
-  const imageUrl = form.watch('imageUrl');
+
+  const mediaUrl = form.watch('mediaUrl');
+  const mediaType = form.watch('mediaType');
 
   return (
     <Form {...form}>
@@ -105,50 +112,68 @@ export function TestimonialForm({ initialData }: TestimonialFormProps) {
                   )}
                 />
                 
-                <FormField
-                  control={form.control}
-                  name="imageUrl"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Image URL</FormLabel>
-                      <div className="flex items-start gap-4">
-                        <img
-                            src={imageUrl || "https://placehold.co/100x100.png"}
-                            alt="Image preview"
-                            width={100}
-                            height={100}
-                            className="rounded-md object-cover h-24 w-24"
-                            data-ai-hint="person avatar"
-                            onError={(e) => {
-                                e.currentTarget.onerror = null;
-                                e.currentTarget.src = 'https://placehold.co/100x100.png';
-                            }}
-                            />
-                        <div className="flex-1 space-y-2">
-                            <FormControl>
-                                <Input placeholder="https://example.com/image.png" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </div>
-                      </div>
-                    </FormItem>
+                <div className="space-y-4 rounded-md border p-4">
+                  <FormLabel>Media (Optional)</FormLabel>
+                  {mediaType === 'image' && mediaUrl && (
+                     <img
+                        src={mediaUrl}
+                        alt="Image preview"
+                        width={100}
+                        height={100}
+                        className="rounded-md object-cover h-24 w-24"
+                        data-ai-hint="person avatar"
+                        onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                        }}
+                        onLoad={(e) => {
+                            e.currentTarget.style.display = 'block';
+                        }}
+                        />
                   )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="videoUrl"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Video URL (Optional)</FormLabel>
-                      <FormControl>
-                        <Input placeholder="https://youtube.com/watch?v=..." {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
+                  <FormField
+                    control={form.control}
+                    name="mediaType"
+                    render={({ field }) => (
+                      <FormItem className="space-y-3">
+                        <FormLabel>Media Type</FormLabel>
+                        <FormControl>
+                          <RadioGroup
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                            className="flex flex-col space-y-1"
+                          >
+                            <FormItem className="flex items-center space-x-3 space-y-0">
+                              <FormControl>
+                                <RadioGroupItem value="image" />
+                              </FormControl>
+                              <FormLabel className="font-normal">Image</FormLabel>
+                            </FormItem>
+                            <FormItem className="flex items-center space-x-3 space-y-0">
+                              <FormControl>
+                                <RadioGroupItem value="video" />
+                              </FormControl>
+                              <FormLabel className="font-normal">Video</FormLabel>
+                            </FormItem>
+                          </RadioGroup>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="mediaUrl"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Media URL</FormLabel>
+                        <FormControl>
+                          <Input placeholder="https://example.com/media.png" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
               </CardContent>
             </Card>
           </div>

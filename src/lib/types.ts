@@ -36,8 +36,8 @@ export interface Testimonial {
   clientName: string;
   location: string;
   content: string;
-  imageUrl: string;
-  videoUrl?: string;
+  mediaType?: 'image' | 'video';
+  mediaUrl?: string;
   displayOrder: number;
   isActive: boolean;
 }

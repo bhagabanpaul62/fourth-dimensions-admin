@@ -24,7 +24,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { MoreHorizontal, ArrowUpDown, CheckCircle, XCircle } from 'lucide-react';
+import { MoreHorizontal, ArrowUpDown, CheckCircle, XCircle, Image as ImageIcon, Video as VideoIcon } from 'lucide-react';
 import Link from 'next/link';
 import { deleteTestimonial } from '@/lib/actions';
 import type { Testimonial } from '@/lib/types';
@@ -99,15 +99,20 @@ export function TestimonialsDataTable({ data }: TestimonialsDataTableProps) {
       cell: ({ row }) => <p className="truncate max-w-sm">{row.original.content}</p>,
     },
     {
-        accessorKey: 'videoUrl',
-        header: 'Video',
-        cell: ({ row }) => {
-            return row.original.videoUrl ? (
-                <CheckCircle className="h-5 w-5 text-green-500" />
-            ) : (
-                <XCircle className="h-5 w-5 text-muted-foreground" />
-            )
-        }
+      accessorKey: 'mediaType',
+      header: 'Media',
+      cell: ({ row }) => {
+        const type = row.original.mediaType;
+        if (!type) return <XCircle className="h-5 w-5 text-muted-foreground" />;
+        
+        return (
+            <div className="flex items-center gap-2">
+                {type === 'image' && <ImageIcon className="h-5 w-5 text-sky-500" />}
+                {type === 'video' && <VideoIcon className="h-5 w-5 text-rose-500" />}
+                <span className="capitalize">{type}</span>
+            </div>
+        )
+      },
     },
     {
         accessorKey: 'isActive',

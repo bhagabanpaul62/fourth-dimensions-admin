@@ -98,7 +98,8 @@ export async function saveTestimonial(
       testimonials[index] = { 
         ...testimonials[index],
         ...rest,
-        videoUrl: rest.videoUrl || undefined,
+        mediaUrl: rest.mediaUrl || undefined,
+        mediaType: rest.mediaType || undefined,
         id 
       };
     }
@@ -107,7 +108,8 @@ export async function saveTestimonial(
     const newTestimonial: Testimonial = {
       id: randomUUID(),
       ...rest,
-      videoUrl: rest.videoUrl || undefined,
+      mediaUrl: rest.mediaUrl || undefined,
+      mediaType: rest.mediaType || undefined,
     };
     testimonials.push(newTestimonial);
   }
