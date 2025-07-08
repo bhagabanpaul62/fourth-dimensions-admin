@@ -7,11 +7,14 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
+  SidebarFooter,
+  SidebarSeparator,
 } from '@/components/ui/sidebar';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Building2, Inbox, ClipboardList, Sofa, DraftingCompass, Star } from 'lucide-react';
+import { LayoutDashboard, Building2, Inbox, ClipboardList, Sofa, DraftingCompass, Star, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { logout } from '@/app/login/actions';
 
 const menuItems = [
   { href: '/', label: 'Dashboard', icon: LayoutDashboard },
@@ -62,6 +65,19 @@ export function AppSidebar() {
           ))}
         </SidebarMenu>
       </SidebarContent>
+      <SidebarFooter>
+        <SidebarSeparator />
+        <form action={logout}>
+            <SidebarMenu>
+                <SidebarMenuItem>
+                    <SidebarMenuButton type="submit" tooltip={{children: "Logout"}}>
+                        <LogOut className="h-5 w-5" />
+                        <span>Logout</span>
+                    </SidebarMenuButton>
+                </SidebarMenuItem>
+            </SidebarMenu>
+        </form>
+      </SidebarFooter>
     </Sidebar>
   );
 }
