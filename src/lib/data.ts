@@ -1,4 +1,4 @@
-import type { Category, ContactRequest, QuotationRequest } from './types';
+import type { Category, ContactRequest, QuotationRequest, Testimonial } from './types';
 
 export let interiorCategories: Category[] = [
   {
@@ -86,6 +86,25 @@ export let quotationRequests: QuotationRequest[] = [
     },
 ];
 
+export let testimonials: Testimonial[] = [
+  {
+    id: 'test-1',
+    clientName: 'Bala Shanmugakumar',
+    location: 'Plutus Residence, Chennai',
+    content: "Bala was looking for a match in wavelength and vision for his home. He found that in HomeLane. HomeLane's well-structured workflow helped him stay abreast of the process at all times, from design to production to delivery. The 3D design software, Spacecraft Pro, also gave him a clear picture of how his home would look like. Book your consultation with HomeLane today!",
+    imageUrl: 'https://placehold.co/600x400.png',
+  },
+  {
+    id: 'test-2',
+    clientName: 'Joytilak and Anushua',
+    location: 'Sobha Silicon Oasis, Bengaluru',
+    content: "Joytilak and Anushua tried to find designers but they could find none, that matched their vision. HomeLane provided them with a designer who understood their vision and made it a reality even before the promised delivery date. The material quality and execution of the design were in their words 'top-notch'. The glowing compliments received about their home interiors from friends and family were a cherry on the cake.",
+    imageUrl: 'https://placehold.co/600x400.png',
+    videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+  },
+];
+
+
 // Mock API functions
 export const getCategories = async (type: 'interior' | 'construction'): Promise<Category[]> => {
     await new Promise(resolve => setTimeout(resolve, 500));
@@ -106,4 +125,14 @@ export const getContactRequests = async (): Promise<ContactRequest[]> => {
 export const getQuotationRequests = async (): Promise<QuotationRequest[]> => {
     await new Promise(resolve => setTimeout(resolve, 500));
     return [...quotationRequests];
+}
+
+export const getTestimonials = async (): Promise<Testimonial[]> => {
+    await new Promise(resolve => setTimeout(resolve, 500));
+    return [...testimonials];
+};
+
+export const getTestimonialById = async (id: string): Promise<Testimonial | undefined> => {
+    await new Promise(resolve => setTimeout(resolve, 500));
+    return testimonials.find(t => t.id === id);
 }

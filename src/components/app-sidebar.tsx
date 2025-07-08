@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/sidebar';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Building2, Inbox, ClipboardList, Sofa, DraftingCompass, LogOut } from 'lucide-react';
+import { LayoutDashboard, Building2, Inbox, ClipboardList, Sofa, DraftingCompass, LogOut, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { logout } from '@/app/login/actions';
 
@@ -19,6 +19,7 @@ const menuItems = [
   { href: '/', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/interior', label: 'Interior', icon: Sofa },
   { href: '/construction', label: 'Construction', icon: Building2 },
+  { href: '/testimonials', label: 'Testimonials', icon: Star },
   { href: '/contact-requests', label: 'Contact Requests', icon: Inbox },
   { href: '/quotation-requests', label: 'Quotation Requests', icon: ClipboardList },
 ];

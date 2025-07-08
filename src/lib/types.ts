@@ -30,3 +30,12 @@ export interface QuotationRequest {
   type: CategoryType;
   submittedAt: Date;
 }
+
+export interface Testimonial {
+  id: string;
+  clientName: string;
+  location: string;
+  content: string;
+  imageUrl: string;
+  videoUrl?: string;
+}

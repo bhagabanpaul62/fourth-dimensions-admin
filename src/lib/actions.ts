@@ -2,14 +2,15 @@
 
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
-import { categorySchema } from './schemas';
+import { categorySchema, testimonialSchema } from './schemas';
 import {
   interiorCategories,
   constructionCategories,
   contactRequests,
   quotationRequests,
+  testimonials,
 } from './data';
-import type { Category, CategoryType } from './types';
+import type { Category, CategoryType, Testimonial } from './types';
 import { randomUUID } from 'crypto';
 
 // In a real app, these would interact with a database.
@@ -80,5 +81,51 @@ export async function deleteQuotationRequest(id: string) {
   // Simulate DB operation
   await new Promise((res) => setTimeout(res, 500));
   revalidatePath('/quotation-requests');
+  revalidatePath('/');
+}
+
+// --- TESTIMONIAL ACTIONS ---
+export async function saveTestimonial(
+  values: z.infer<typeof testimonialSchema>
+) {
+  const validatedData = testimonialSchema.parse(values);
+  const { id, ...rest } = validatedData;
+  
+  if (id) {
+    // Update existing testimonial
+    const index = testimonials.findIndex((t) => t.id === id);
+    if (index !== -1) {
+      testimonials[index] = { 
+        ...testimonials[index],
+        ...rest,
+        videoUrl: rest.videoUrl || undefined,
+        id 
+      };
+    }
+  } else {
+    // Create new testimonial
+    const newTestimonial: Testimonial = {
+      id: randomUUID(),
+      ...rest,
+      videoUrl: rest.videoUrl || undefined,
+    };
+    testimonials.push(newTestimonial);
+  }
+
+  // Simulate DB operation
+  await new Promise((res) => setTimeout(res, 1000));
+
+  revalidatePath(`/testimonials`);
+  revalidatePath('/');
+}
+
+export async function deleteTestimonial(id: string) {
+  const index = testimonials.findIndex((t) => t.id === id);
+  if (index > -1) {
+    testimonials.splice(index, 1);
+  }
+  // Simulate DB operation
+  await new Promise((res) => setTimeout(res, 500));
+  revalidatePath(`/testimonials`);
   revalidatePath('/');
 }
