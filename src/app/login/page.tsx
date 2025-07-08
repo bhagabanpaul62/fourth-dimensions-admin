@@ -30,7 +30,7 @@ export default function LoginPage() {
                 id="username"
                 name="username"
                 type="text"
-                placeholder="Admin"
+                placeholder="Admin-nike"
                 required
               />
             </div>
