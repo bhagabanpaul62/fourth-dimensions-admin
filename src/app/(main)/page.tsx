@@ -1,8 +1,8 @@
 import { PageHeader } from "@/components/page-header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getCategories, getContactRequests, getQuotationRequests, getTestimonials, getHeroImages } from "@/lib/data";
-import { Building2, ClipboardList, Inbox, Sofa, Star, Image as ImageIcon, AlertTriangle } from "lucide-react";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Building2, ClipboardList, Inbox, Sofa, Star, Image as ImageIcon } from "lucide-react";
+import { DbErrorAlert } from "@/components/db-error-alert";
 
 export default async function DashboardPage() {
   let interiorCount = 0;
@@ -11,17 +11,34 @@ export default async function DashboardPage() {
   let contactCount = 0;
   let quotationCount = 0;
   let heroImageCount = 0;
-  let dbError: string | null = null;
+  let dbError: any = null;
 
   try {
-    interiorCount = (await getCategories("interior")).length;
-    constructionCount = (await getCategories("construction")).length;
-    testimonialCount = (await getTestimonials()).length;
-    contactCount = (await getContactRequests()).length;
-    quotationCount = (await getQuotationRequests()).length;
-    heroImageCount = (await getHeroImages()).length;
+    // Promise.all to fetch in parallel for better performance
+    const [
+      interiorCategories,
+      constructionCategories,
+      testimonials,
+      contactRequests,
+      quotationRequests,
+      heroImages
+    ] = await Promise.all([
+      getCategories("interior"),
+      getCategories("construction"),
+      getTestimonials(),
+      getContactRequests(),
+      getQuotationRequests(),
+      getHeroImages(),
+    ]);
+
+    interiorCount = interiorCategories.length;
+    constructionCount = constructionCategories.length;
+    testimonialCount = testimonials.length;
+    contactCount = contactRequests.length;
+    quotationCount = quotationRequests.length;
+    heroImageCount = heroImages.length;
   } catch (error: any) {
-    dbError = error.message;
+    dbError = error;
   }
 
   const stats = [
@@ -37,17 +54,7 @@ export default async function DashboardPage() {
     <div>
       <PageHeader title="Dashboard" />
 
-      {dbError && (
-        <Alert variant="destructive" className="mb-6">
-          <AlertTriangle className="h-4 w-4" />
-          <AlertTitle>Database Connection Error</AlertTitle>
-          <AlertDescription>
-            <p>The application could not fetch data from the database. This is likely due to a permission issue.</p>
-            <p className="font-mono text-xs mt-2 bg-background/20 p-2 rounded">Error: {dbError}</p>
-            <p className="mt-2">Please ensure the user in your <strong>MONGODB_URI</strong> has the 'readWrite' role on the database. Refer to the instructions in <strong>README.md</strong> to resolve this.</p>
-          </AlertDescription>
-        </Alert>
-      )}
+      {dbError && <DbErrorAlert error={dbError} />}
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat) => (
