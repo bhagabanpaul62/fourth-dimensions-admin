@@ -1,10 +1,26 @@
 import { MongoClient, Db } from 'mongodb';
+import { config } from 'dotenv';
 
-if (!process.env.MONGODB_URI) {
-  throw new Error('Invalid/Missing environment variable: "MONGODB_URI"');
+config({ path: 'workspace/.env' });
+
+let uri = process.env.MONGODB_URI;
+
+if (!uri) {
+  throw new Error('Invalid/Missing environment variable: "MONGODB_URI" in your workspace/.env file.');
 }
 
-const uri = process.env.MONGODB_URI;
+// Robustness: Trim whitespace and remove quotes from the connection string
+uri = uri.trim();
+if ((uri.startsWith('"') && uri.endsWith('"')) || (uri.startsWith("'") && uri.endsWith("'"))) {
+  uri = uri.substring(1, uri.length - 1);
+}
+
+if (!uri.startsWith('mongodb://') && !uri.startsWith('mongodb+srv://')) {
+    throw new Error(
+      'Invalid MONGODB_URI scheme. The connection string must start with "mongodb://" or "mongodb+srv://". Please check your workspace/.env file.'
+    );
+}
+
 const options = {};
 
 let client: MongoClient;
