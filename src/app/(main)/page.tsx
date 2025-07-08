@@ -1,15 +1,28 @@
 import { PageHeader } from "@/components/page-header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getCategories, getContactRequests, getQuotationRequests, getTestimonials, getHeroImages } from "@/lib/data";
-import { Building2, ClipboardList, Inbox, Sofa, Star, Image as ImageIcon } from "lucide-react";
+import { Building2, ClipboardList, Inbox, Sofa, Star, Image as ImageIcon, AlertTriangle } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default async function DashboardPage() {
-  const interiorCount = (await getCategories("interior")).length;
-  const constructionCount = (await getCategories("construction")).length;
-  const testimonialCount = (await getTestimonials()).length;
-  const contactCount = (await getContactRequests()).length;
-  const quotationCount = (await getQuotationRequests()).length;
-  const heroImageCount = (await getHeroImages()).length;
+  let interiorCount = 0;
+  let constructionCount = 0;
+  let testimonialCount = 0;
+  let contactCount = 0;
+  let quotationCount = 0;
+  let heroImageCount = 0;
+  let dbError: string | null = null;
+
+  try {
+    interiorCount = (await getCategories("interior")).length;
+    constructionCount = (await getCategories("construction")).length;
+    testimonialCount = (await getTestimonials()).length;
+    contactCount = (await getContactRequests()).length;
+    quotationCount = (await getQuotationRequests()).length;
+    heroImageCount = (await getHeroImages()).length;
+  } catch (error: any) {
+    dbError = error.message;
+  }
 
   const stats = [
     { title: "Interior Categories", value: interiorCount, icon: Sofa },
@@ -23,6 +36,19 @@ export default async function DashboardPage() {
   return (
     <div>
       <PageHeader title="Dashboard" />
+
+      {dbError && (
+        <Alert variant="destructive" className="mb-6">
+          <AlertTriangle className="h-4 w-4" />
+          <AlertTitle>Database Connection Error</AlertTitle>
+          <AlertDescription>
+            <p>The application could not fetch data from the database. This is likely due to a permission issue.</p>
+            <p className="font-mono text-xs mt-2 bg-background/20 p-2 rounded">Error: {dbError}</p>
+            <p className="mt-2">Please ensure the user in your <strong>MONGODB_URI</strong> has the 'readWrite' role on the database. Refer to the instructions in <strong>README.md</strong> to resolve this.</p>
+          </AlertDescription>
+        </Alert>
+      )}
+
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat) => (
           <Card key={stat.title}>
