@@ -1,43 +1,84 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
-import type { z } from 'zod';
-import type { categorySchema } from './schemas';
+import { z } from 'zod';
+import { categorySchema } from './schemas';
+import {
+  interiorCategories,
+  constructionCategories,
+  contactRequests,
+  quotationRequests,
+} from './data';
+import type { Category, CategoryType } from './types';
+import { randomUUID } from 'crypto';
 
 // In a real app, these would interact with a database.
-// For now, they just log to the console.
+// For now, we are mutating the in-memory arrays.
 
 // --- CATEGORY ACTIONS ---
 export async function saveCategory(
-  type: 'interior' | 'construction',
-  data: z.infer<typeof categorySchema>
+  type: CategoryType,
+  values: z.infer<typeof categorySchema>
 ) {
-  console.log(`Saving ${type} category:`, data);
+  const validatedData = categorySchema.parse(values);
+  const { id, ...rest } = validatedData;
+  const targetArray =
+    type === 'interior' ? interiorCategories : constructionCategories;
+
+  if (id) {
+    // Update existing category
+    const index = targetArray.findIndex((c) => c.id === id);
+    if (index !== -1) {
+      targetArray[index] = { ...targetArray[index], ...rest, id };
+    }
+  } else {
+    // Create new category
+    const newCategory: Category = {
+      id: randomUUID(),
+      ...rest,
+    };
+    targetArray.push(newCategory);
+  }
+
   // Simulate DB operation
-  await new Promise(res => setTimeout(res, 1000));
+  await new Promise((res) => setTimeout(res, 1000));
+
   revalidatePath(`/${type}`);
-  redirect(`/${type}`);
+  revalidatePath('/');
 }
 
-export async function deleteCategory(type: 'interior' | 'construction', id: string) {
-  console.log(`Deleting ${type} category with id: ${id}`);
+export async function deleteCategory(type: CategoryType, id: string) {
+  const targetArray =
+    type === 'interior' ? interiorCategories : constructionCategories;
+  const index = targetArray.findIndex((c) => c.id === id);
+  if (index > -1) {
+    targetArray.splice(index, 1);
+  }
   // Simulate DB operation
-  await new Promise(res => setTimeout(res, 500));
+  await new Promise((res) => setTimeout(res, 500));
   revalidatePath(`/${type}`);
+  revalidatePath('/');
 }
 
 // --- REQUEST ACTIONS ---
 export async function deleteContactRequest(id: string) {
-  console.log(`Deleting contact request with id: ${id}`);
+  const index = contactRequests.findIndex((r) => r.id === id);
+  if (index > -1) {
+    contactRequests.splice(index, 1);
+  }
   // Simulate DB operation
-  await new Promise(res => setTimeout(res, 500));
+  await new Promise((res) => setTimeout(res, 500));
   revalidatePath('/contact-requests');
+  revalidatePath('/');
 }
 
 export async function deleteQuotationRequest(id: string) {
-  console.log(`Deleting quotation request with id: ${id}`);
+  const index = quotationRequests.findIndex((r) => r.id === id);
+  if (index > -1) {
+    quotationRequests.splice(index, 1);
+  }
   // Simulate DB operation
-  await new Promise(res => setTimeout(res, 500));
+  await new Promise((res) => setTimeout(res, 500));
   revalidatePath('/quotation-requests');
+  revalidatePath('/');
 }

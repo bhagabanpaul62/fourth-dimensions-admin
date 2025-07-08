@@ -1,6 +1,6 @@
 import type { Category, ContactRequest, QuotationRequest } from './types';
 
-export const interiorCategories: Category[] = [
+export let interiorCategories: Category[] = [
   {
     id: 'int-1',
     title: 'Modular Kitchen',
@@ -21,7 +21,7 @@ export const interiorCategories: Category[] = [
   },
 ];
 
-export const constructionCategories: Category[] = [
+export let constructionCategories: Category[] = [
   {
     id: 'con-1',
     title: 'Home Construction',
@@ -36,7 +36,7 @@ export const constructionCategories: Category[] = [
   },
 ];
 
-export const contactRequests: ContactRequest[] = [
+export let contactRequests: ContactRequest[] = [
     {
         id: 'cr-1',
         name: 'John Doe',
@@ -57,7 +57,7 @@ export const contactRequests: ContactRequest[] = [
     },
 ];
 
-export const quotationRequests: QuotationRequest[] = [
+export let quotationRequests: QuotationRequest[] = [
     {
         id: 'qr-1',
         fullName: 'Alice Johnson',
@@ -89,7 +89,7 @@ export const quotationRequests: QuotationRequest[] = [
 // Mock API functions
 export const getCategories = async (type: 'interior' | 'construction'): Promise<Category[]> => {
     await new Promise(resolve => setTimeout(resolve, 500));
-    return type === 'interior' ? interiorCategories : constructionCategories;
+    return type === 'interior' ? [...interiorCategories] : [...constructionCategories];
 };
 
 export const getCategoryById = async (type: 'interior' | 'construction', id: string): Promise<Category | undefined> => {
@@ -100,10 +100,10 @@ export const getCategoryById = async (type: 'interior' | 'construction', id: str
 
 export const getContactRequests = async (): Promise<ContactRequest[]> => {
     await new Promise(resolve => setTimeout(resolve, 500));
-    return contactRequests;
+    return [...contactRequests];
 }
 
 export const getQuotationRequests = async (): Promise<QuotationRequest[]> => {
     await new Promise(resolve => setTimeout(resolve, 500));
-    return quotationRequests;
+    return [...quotationRequests];
 }
