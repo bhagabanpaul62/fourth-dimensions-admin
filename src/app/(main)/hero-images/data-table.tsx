@@ -55,11 +55,19 @@ export function HeroImagesDataTable({ data }: HeroImagesDataTableProps) {
 
   const handleDelete = (id: string) => {
     startTransition(async () => {
-      await deleteHeroImage(id);
-      toast({
-        title: 'Success',
-        description: 'Hero image deleted successfully.',
-      });
+      try {
+        await deleteHeroImage(id);
+        toast({
+          title: 'Success',
+          description: 'Hero image deleted successfully.',
+        });
+      } catch (error: any) {
+        toast({
+          variant: 'destructive',
+          title: 'Error deleting hero image',
+          description: error.message,
+        });
+      }
     });
   };
   

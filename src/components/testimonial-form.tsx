@@ -49,12 +49,20 @@ export function TestimonialForm({ initialData }: TestimonialFormProps) {
 
   const onSubmit = (values: TestimonialFormValues) => {
     startTransition(async () => {
-      await saveTestimonial(values);
-      toast({
-        title: 'Success',
-        description: `Testimonial ${initialData ? 'updated' : 'created'} successfully.`,
-      });
-      router.push(`/testimonials`);
+      try {
+        await saveTestimonial(values);
+        toast({
+          title: 'Success',
+          description: `Testimonial ${initialData ? 'updated' : 'created'} successfully.`,
+        });
+        router.push(`/testimonials`);
+      } catch (error: any) {
+        toast({
+          variant: 'destructive',
+          title: `Error ${initialData ? 'updating' : 'creating'} testimonial`,
+          description: error.message,
+        });
+      }
     });
   };
 

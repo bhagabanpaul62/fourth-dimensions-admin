@@ -39,13 +39,21 @@ export function HeroImageForm({ initialData }: HeroImageFormProps) {
 
   const onSubmit = (values: HeroImageFormValues) => {
     startTransition(async () => {
-      await saveHeroImage(values);
-      toast({
-        title: 'Success',
-        description: `Hero Image ${initialData ? 'updated' : 'created'} successfully.`,
-      });
-      router.push(`/hero-images`);
-      router.refresh();
+      try {
+        await saveHeroImage(values);
+        toast({
+          title: 'Success',
+          description: `Hero Image ${initialData ? 'updated' : 'created'} successfully.`,
+        });
+        router.push(`/hero-images`);
+        router.refresh();
+      } catch (error: any) {
+        toast({
+            variant: 'destructive',
+            title: `Error ${initialData ? 'updating' : 'creating'} hero image`,
+            description: error.message,
+        });
+      }
     });
   };
 

@@ -53,11 +53,19 @@ export function CategoriesDataTable({ data, categoryType }: CategoriesDataTableP
 
   const handleDelete = (id: string) => {
     startTransition(async () => {
-      await deleteCategory(categoryType, id);
-      toast({
-        title: 'Success',
-        description: 'Category deleted successfully.',
-      });
+      try {
+        await deleteCategory(categoryType, id);
+        toast({
+          title: 'Success',
+          description: 'Category deleted successfully.',
+        });
+      } catch (error: any) {
+        toast({
+          variant: 'destructive',
+          title: 'Error deleting category',
+          description: error.message,
+        });
+      }
     });
   };
   

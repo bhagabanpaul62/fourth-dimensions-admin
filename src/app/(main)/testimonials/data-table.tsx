@@ -55,11 +55,19 @@ export function TestimonialsDataTable({ data }: TestimonialsDataTableProps) {
 
   const handleDelete = (id: string) => {
     startTransition(async () => {
-      await deleteTestimonial(id);
-      toast({
-        title: 'Success',
-        description: 'Testimonial deleted successfully.',
-      });
+      try {
+        await deleteTestimonial(id);
+        toast({
+          title: 'Success',
+          description: 'Testimonial deleted successfully.',
+        });
+      } catch (error: any) {
+        toast({
+          variant: 'destructive',
+          title: 'Error deleting testimonial',
+          description: error.message,
+        });
+      }
     });
   };
   

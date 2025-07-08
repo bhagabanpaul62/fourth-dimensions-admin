@@ -53,11 +53,19 @@ export function ContactRequestsDataTable({ data }: ContactRequestsDataTableProps
 
   const handleDelete = (id: string) => {
     startTransition(async () => {
-      await deleteContactRequest(id);
-      toast({
-        title: 'Success',
-        description: 'Contact request deleted successfully.',
-      });
+      try {
+        await deleteContactRequest(id);
+        toast({
+          title: 'Success',
+          description: 'Contact request deleted successfully.',
+        });
+      } catch (error: any) {
+        toast({
+          variant: 'destructive',
+          title: 'Error deleting contact request',
+          description: error.message,
+        });
+      }
     });
   };
   

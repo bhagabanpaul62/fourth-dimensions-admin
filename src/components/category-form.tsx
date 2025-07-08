@@ -46,12 +46,20 @@ export function CategoryForm({ categoryType, initialData }: CategoryFormProps) {
 
   const onSubmit = (values: CategoryFormValues) => {
     startTransition(async () => {
-      await saveCategory(categoryType, values);
-      toast({
-        title: 'Success',
-        description: `Category ${initialData ? 'updated' : 'created'} successfully.`,
-      });
-      router.push(`/${categoryType}`);
+      try {
+        await saveCategory(categoryType, values);
+        toast({
+          title: 'Success',
+          description: `Category ${initialData ? 'updated' : 'created'} successfully.`,
+        });
+        router.push(`/${categoryType}`);
+      } catch (error: any) {
+        toast({
+          variant: 'destructive',
+          title: `Error ${initialData ? 'updating' : 'creating'} category`,
+          description: error.message,
+        });
+      }
     });
   };
 

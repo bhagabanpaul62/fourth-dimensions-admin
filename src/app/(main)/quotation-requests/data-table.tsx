@@ -53,11 +53,19 @@ export function QuotationRequestsDataTable({ data }: QuotationRequestsDataTableP
 
   const handleDelete = (id: string) => {
     startTransition(async () => {
-      await deleteQuotationRequest(id);
-      toast({
-        title: 'Success',
-        description: 'Quotation request deleted successfully.',
-      });
+      try {
+        await deleteQuotationRequest(id);
+        toast({
+          title: 'Success',
+          description: 'Quotation request deleted successfully.',
+        });
+      } catch (error: any) {
+        toast({
+          variant: 'destructive',
+          title: 'Error deleting quotation request',
+          description: error.message,
+        });
+      }
     });
   };
   
