@@ -78,7 +78,13 @@ export function ContactRequestsDataTable({ data }: ContactRequestsDataTableProps
     {
       accessorKey: 'submittedAt',
       header: 'Submitted At',
-      cell: ({ row }) => format(new Date(row.original.submittedAt), 'PPP p'),
+      cell: ({ row }) => {
+        const [isClient, setIsClient] = React.useState(false)
+        React.useEffect(() => {
+          setIsClient(true)
+        }, [])
+        return <>{isClient ? format(new Date(row.original.submittedAt), 'PPP p') : null}</>
+      },
     },
     {
       id: 'actions',
