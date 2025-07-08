@@ -1,12 +1,12 @@
 import { MongoClient, Db } from 'mongodb';
-import { config } from 'dotenv';
 
-config({ path: 'workspace/.env' });
+// The dotenv package is no longer used here.
+// Next.js automatically loads environment variables from the root .env file.
 
 let uri = process.env.MONGODB_URI;
 
 if (!uri) {
-  throw new Error('Invalid/Missing environment variable: "MONGODB_URI" in your workspace/.env file.');
+  throw new Error('Invalid/Missing environment variable: "MONGODB_URI" in your root .env file.');
 }
 
 // Robustness: Trim whitespace and remove quotes from the connection string
@@ -17,7 +17,7 @@ if ((uri.startsWith('"') && uri.endsWith('"')) || (uri.startsWith("'") && uri.en
 
 if (!uri.startsWith('mongodb://') && !uri.startsWith('mongodb+srv://')) {
     throw new Error(
-      'Invalid MONGODB_URI scheme. The connection string must start with "mongodb://" or "mongodb+srv://". Please check your workspace/.env file.'
+      'Invalid MONGODB_URI scheme. The connection string must start with "mongodb://" or "mongodb+srv://". Please check your .env file.'
     );
 }
 
