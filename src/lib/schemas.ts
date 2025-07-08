@@ -14,4 +14,6 @@ export const testimonialSchema = z.object({
   content: z.string().min(10, { message: 'Content must be at least 10 characters long.' }),
   imageUrl: z.string().url({ message: 'Please enter a valid image URL.' }),
   videoUrl: z.string().url({ message: 'Please enter a valid video URL.' }).optional().or(z.literal('')),
+  displayOrder: z.coerce.number().int().min(0, { message: 'Display order must be a positive number.' }),
+  isActive: z.boolean().default(true),
 });

@@ -38,4 +38,6 @@ export interface Testimonial {
   content: string;
   imageUrl: string;
   videoUrl?: string;
+  displayOrder: number;
+  isActive: boolean;
 }

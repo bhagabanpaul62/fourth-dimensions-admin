@@ -93,6 +93,8 @@ export let testimonials: Testimonial[] = [
     location: 'Plutus Residence, Chennai',
     content: "Bala was looking for a match in wavelength and vision for his home. He found that in HomeLane. HomeLane's well-structured workflow helped him stay abreast of the process at all times, from design to production to delivery. The 3D design software, Spacecraft Pro, also gave him a clear picture of how his home would look like. Book your consultation with HomeLane today!",
     imageUrl: 'https://placehold.co/600x400.png',
+    displayOrder: 1,
+    isActive: true,
   },
   {
     id: 'test-2',
@@ -101,6 +103,17 @@ export let testimonials: Testimonial[] = [
     content: "Joytilak and Anushua tried to find designers but they could find none, that matched their vision. HomeLane provided them with a designer who understood their vision and made it a reality even before the promised delivery date. The material quality and execution of the design were in their words 'top-notch'. The glowing compliments received about their home interiors from friends and family were a cherry on the cake.",
     imageUrl: 'https://placehold.co/600x400.png',
     videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    displayOrder: 2,
+    isActive: true,
+  },
+   {
+    id: 'test-3',
+    clientName: 'Inactive User',
+    location: 'Future Project, Delhi',
+    content: "This is an example of an inactive testimonial that will not be displayed on the live site but is still manageable here in the admin panel.",
+    imageUrl: 'https://placehold.co/600x400.png',
+    displayOrder: 3,
+    isActive: false,
   },
 ];
 

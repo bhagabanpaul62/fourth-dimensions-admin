@@ -40,6 +40,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
+import { Badge } from '@/components/ui/badge';
 
 interface TestimonialsDataTableProps {
   data: Testimonial[];
@@ -47,7 +48,9 @@ interface TestimonialsDataTableProps {
 
 export function TestimonialsDataTable({ data }: TestimonialsDataTableProps) {
   const { toast } = useToast();
-  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [sorting, setSorting] = React.useState<SortingState>([
+    { id: 'displayOrder', desc: false },
+  ]);
   const [isPending, startTransition] = React.useTransition();
 
   const handleDelete = (id: string) => {
@@ -61,6 +64,21 @@ export function TestimonialsDataTable({ data }: TestimonialsDataTableProps) {
   };
   
   const columns: ColumnDef<Testimonial>[] = [
+    {
+      accessorKey: 'displayOrder',
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          >
+            Order
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      },
+      cell: ({ row }) => <div className="text-center">{row.original.displayOrder}</div>,
+    },
     {
       accessorKey: 'clientName',
       header: ({ column }) => {
@@ -88,6 +106,17 @@ export function TestimonialsDataTable({ data }: TestimonialsDataTableProps) {
                 <CheckCircle className="h-5 w-5 text-green-500" />
             ) : (
                 <XCircle className="h-5 w-5 text-muted-foreground" />
+            )
+        }
+    },
+    {
+        accessorKey: 'isActive',
+        header: 'Status',
+        cell: ({ row }) => {
+            return row.original.isActive ? (
+                <Badge variant="secondary" className="text-green-700 border-green-200">Active</Badge>
+            ) : (
+                <Badge variant="outline">Inactive</Badge>
             )
         }
     },
