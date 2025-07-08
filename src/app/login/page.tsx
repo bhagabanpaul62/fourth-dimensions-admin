@@ -1,15 +1,5 @@
-'use client';
-
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { redirect } from 'next/navigation';
 
 export default function LoginPage() {
-  const router = useRouter();
-
-  useEffect(() => {
-    // Admin login has been removed, redirecting to homepage.
-    router.replace('/');
-  }, [router]);
-
-  return null;
+  redirect('/');
 }
