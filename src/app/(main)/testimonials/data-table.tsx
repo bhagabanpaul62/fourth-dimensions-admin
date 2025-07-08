@@ -114,7 +114,7 @@ export function TestimonialsDataTable({ data }: TestimonialsDataTableProps) {
         header: 'Status',
         cell: ({ row }) => {
             return row.original.isActive ? (
-                <Badge variant="secondary" className="text-green-700 border-green-200">Active</Badge>
+                <Badge variant="secondary">Active</Badge>
             ) : (
                 <Badge variant="outline">Inactive</Badge>
             )
