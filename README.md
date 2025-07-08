@@ -4,6 +4,16 @@ This is a NextJS starter in Firebase Studio.
 
 To get started, take a look at src/app/page.tsx.
 
+## Environment Variables
+
+To run this application, you need to set up a `.env` file in the `workspace` directory. Create a file named `.env` and add the following variable:
+
+```bash
+MONGODB_URI="your_mongodb_connection_string"
+```
+
+Replace `"your_mongodb_connection_string"` with the actual connection string for your MongoDB database.
+
 ## MongoDB Data Import
 
 This project includes a file `mongodb-import-data.json` containing all the sample data used in the application. You can use this file to populate your MongoDB database.
@@ -32,3 +42,5 @@ mongoimport --db <your_database_name> --collection quotationrequests --file mong
 ```
 
 **Note:** The `--drop` flag will delete the collection before importing the new data. Use it with caution if you have existing data.
+
+```

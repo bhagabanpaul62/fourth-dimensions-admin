@@ -2,6 +2,7 @@ export type CategoryType = 'interior' | 'construction';
 
 export interface Category {
   id: string;
+  type: CategoryType;
   title: string;
   description: string;
   images: string[];

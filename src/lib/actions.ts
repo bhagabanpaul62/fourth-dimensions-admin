@@ -3,19 +3,9 @@
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { categorySchema, testimonialSchema, heroImageSchema } from './schemas';
-import {
-  interiorCategories,
-  constructionCategories,
-  contactRequests,
-  quotationRequests,
-  testimonials,
-  heroImages,
-} from './data';
-import type { Category, CategoryType, Testimonial, HeroImage } from './types';
+import { getDb } from './db';
+import type { CategoryType } from './types';
 import { randomUUID } from 'crypto';
-
-// In a real app, these would interact with a database.
-// For now, we are mutating the in-memory arrays.
 
 // --- CATEGORY ACTIONS ---
 export async function saveCategory(
@@ -23,64 +13,42 @@ export async function saveCategory(
   values: z.infer<typeof categorySchema>
 ) {
   const validatedData = categorySchema.parse(values);
+  const db = await getDb();
+  const collection = db.collection('categories');
   const { id, ...rest } = validatedData;
-  const targetArray =
-    type === 'interior' ? interiorCategories : constructionCategories;
 
   if (id) {
-    // Update existing category
-    const index = targetArray.findIndex((c) => c.id === id);
-    if (index !== -1) {
-      targetArray[index] = { ...targetArray[index], ...rest, id };
-    }
+    await collection.updateOne({ _id: id }, { $set: { ...rest, type } });
   } else {
-    // Create new category
-    const newCategory: Category = {
-      id: randomUUID(),
-      ...rest,
-    };
-    targetArray.push(newCategory);
+    const newId = randomUUID();
+    await collection.insertOne({ _id: newId, ...rest, type });
   }
-
-  // Simulate DB operation
-  await new Promise((res) => setTimeout(res, 1000));
 
   revalidatePath(`/${type}`);
   revalidatePath('/');
 }
 
 export async function deleteCategory(type: CategoryType, id: string) {
-  const targetArray =
-    type === 'interior' ? interiorCategories : constructionCategories;
-  const index = targetArray.findIndex((c) => c.id === id);
-  if (index > -1) {
-    targetArray.splice(index, 1);
-  }
-  // Simulate DB operation
-  await new Promise((res) => setTimeout(res, 500));
+  const db = await getDb();
+  await db.collection('categories').deleteOne({ _id: id, type });
+
   revalidatePath(`/${type}`);
   revalidatePath('/');
 }
 
 // --- REQUEST ACTIONS ---
 export async function deleteContactRequest(id: string) {
-  const index = contactRequests.findIndex((r) => r.id === id);
-  if (index > -1) {
-    contactRequests.splice(index, 1);
-  }
-  // Simulate DB operation
-  await new Promise((res) => setTimeout(res, 500));
+  const db = await getDb();
+  await db.collection('contactrequests').deleteOne({ _id: id });
+
   revalidatePath('/contact-requests');
   revalidatePath('/');
 }
 
 export async function deleteQuotationRequest(id: string) {
-  const index = quotationRequests.findIndex((r) => r.id === id);
-  if (index > -1) {
-    quotationRequests.splice(index, 1);
-  }
-  // Simulate DB operation
-  await new Promise((res) => setTimeout(res, 500));
+  const db = await getDb();
+  await db.collection('quotationrequests').deleteOne({ _id: id });
+  
   revalidatePath('/quotation-requests');
   revalidatePath('/');
 }
@@ -90,45 +58,31 @@ export async function saveTestimonial(
   values: z.infer<typeof testimonialSchema>
 ) {
   const validatedData = testimonialSchema.parse(values);
+  const db = await getDb();
+  const collection = db.collection('testimonials');
   const { id, ...rest } = validatedData;
   
-  if (id) {
-    // Update existing testimonial
-    const index = testimonials.findIndex((t) => t.id === id);
-    if (index !== -1) {
-      testimonials[index] = { 
-        ...testimonials[index],
-        ...rest,
-        mediaUrl: rest.mediaUrl || undefined,
-        mediaType: rest.mediaType || undefined,
-        id 
-      };
-    }
-  } else {
-    // Create new testimonial
-    const newTestimonial: Testimonial = {
-      id: randomUUID(),
-      ...rest,
-      mediaUrl: rest.mediaUrl || undefined,
-      mediaType: rest.mediaType || undefined,
-    };
-    testimonials.push(newTestimonial);
-  }
+  const testimonialData = {
+    ...rest,
+    mediaUrl: rest.mediaUrl || undefined,
+    mediaType: rest.mediaType || undefined,
+  };
 
-  // Simulate DB operation
-  await new Promise((res) => setTimeout(res, 1000));
+  if (id) {
+    await collection.updateOne({ _id: id }, { $set: testimonialData });
+  } else {
+    const newId = randomUUID();
+    await collection.insertOne({ _id: newId, ...testimonialData });
+  }
 
   revalidatePath(`/testimonials`);
   revalidatePath('/');
 }
 
 export async function deleteTestimonial(id: string) {
-  const index = testimonials.findIndex((t) => t.id === id);
-  if (index > -1) {
-    testimonials.splice(index, 1);
-  }
-  // Simulate DB operation
-  await new Promise((res) => setTimeout(res, 500));
+  const db = await getDb();
+  await db.collection('testimonials').deleteOne({ _id: id });
+
   revalidatePath(`/testimonials`);
   revalidatePath('/');
 }
@@ -138,42 +92,30 @@ export async function saveHeroImage(
   values: z.infer<typeof heroImageSchema>
 ) {
   const validatedData = heroImageSchema.parse(values);
+  const db = await getDb();
+  const collection = db.collection('heroimages');
   const { id, ...rest } = validatedData;
   
-  if (id) {
-    // Update existing hero image
-    const index = heroImages.findIndex((h) => h.id === id);
-    if (index !== -1) {
-      heroImages[index] = { 
-        ...heroImages[index],
-        ...rest,
-        id 
-      };
-    }
-  } else {
-    // Create new hero image
-    const newHeroImage: HeroImage = {
-      id: randomUUID(),
-      ...rest,
-      title: rest.title || '',
-    };
-    heroImages.push(newHeroImage);
-  }
+  const heroImageData = {
+    ...rest,
+    title: rest.title || '',
+  };
 
-  // Simulate DB operation
-  await new Promise((res) => setTimeout(res, 1000));
+  if (id) {
+    await collection.updateOne({ _id: id }, { $set: heroImageData });
+  } else {
+    const newId = randomUUID();
+    await collection.insertOne({ _id: newId, ...heroImageData });
+  }
 
   revalidatePath(`/hero-images`);
   revalidatePath('/');
 }
 
 export async function deleteHeroImage(id: string) {
-  const index = heroImages.findIndex((h) => h.id === id);
-  if (index > -1) {
-    heroImages.splice(index, 1);
-  }
-  // Simulate DB operation
-  await new Promise((res) => setTimeout(res, 500));
+  const db = await getDb();
+  await db.collection('heroimages').deleteOne({ _id: id });
+  
   revalidatePath(`/hero-images`);
   revalidatePath('/');
 }
