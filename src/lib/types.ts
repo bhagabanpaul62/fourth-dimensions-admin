@@ -41,3 +41,11 @@ export interface Testimonial {
   displayOrder: number;
   isActive: boolean;
 }
+
+export interface HeroImage {
+  id: string;
+  displayOrder: number;
+  title: string;
+  imageUrl: string;
+  isActive: boolean;
+}

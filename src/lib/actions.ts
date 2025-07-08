@@ -2,15 +2,16 @@
 
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
-import { categorySchema, testimonialSchema } from './schemas';
+import { categorySchema, testimonialSchema, heroImageSchema } from './schemas';
 import {
   interiorCategories,
   constructionCategories,
   contactRequests,
   quotationRequests,
   testimonials,
+  heroImages,
 } from './data';
-import type { Category, CategoryType, Testimonial } from './types';
+import type { Category, CategoryType, Testimonial, HeroImage } from './types';
 import { randomUUID } from 'crypto';
 
 // In a real app, these would interact with a database.
@@ -129,5 +130,50 @@ export async function deleteTestimonial(id: string) {
   // Simulate DB operation
   await new Promise((res) => setTimeout(res, 500));
   revalidatePath(`/testimonials`);
+  revalidatePath('/');
+}
+
+// --- HERO IMAGE ACTIONS ---
+export async function saveHeroImage(
+  values: z.infer<typeof heroImageSchema>
+) {
+  const validatedData = heroImageSchema.parse(values);
+  const { id, ...rest } = validatedData;
+  
+  if (id) {
+    // Update existing hero image
+    const index = heroImages.findIndex((h) => h.id === id);
+    if (index !== -1) {
+      heroImages[index] = { 
+        ...heroImages[index],
+        ...rest,
+        id 
+      };
+    }
+  } else {
+    // Create new hero image
+    const newHeroImage: HeroImage = {
+      id: randomUUID(),
+      ...rest,
+      title: rest.title || '',
+    };
+    heroImages.push(newHeroImage);
+  }
+
+  // Simulate DB operation
+  await new Promise((res) => setTimeout(res, 1000));
+
+  revalidatePath(`/hero-images`);
+  revalidatePath('/');
+}
+
+export async function deleteHeroImage(id: string) {
+  const index = heroImages.findIndex((h) => h.id === id);
+  if (index > -1) {
+    heroImages.splice(index, 1);
+  }
+  // Simulate DB operation
+  await new Promise((res) => setTimeout(res, 500));
+  revalidatePath(`/hero-images`);
   revalidatePath('/');
 }

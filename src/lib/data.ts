@@ -1,4 +1,4 @@
-import type { Category, ContactRequest, QuotationRequest, Testimonial } from './types';
+import type { Category, ContactRequest, QuotationRequest, Testimonial, HeroImage } from './types';
 
 export let interiorCategories: Category[] = [
   {
@@ -119,6 +119,23 @@ export let testimonials: Testimonial[] = [
   },
 ];
 
+export let heroImages: HeroImage[] = [
+  {
+    id: 'hero-1',
+    displayOrder: 1,
+    title: 'Main Banner',
+    imageUrl: 'https://placehold.co/1920x1080.png',
+    isActive: true,
+  },
+  {
+    id: 'hero-2',
+    displayOrder: 2,
+    title: 'Summer Campaign',
+    imageUrl: 'https://placehold.co/1920x1080.png',
+    isActive: false,
+  },
+];
+
 
 // Mock API functions
 export const getCategories = async (type: 'interior' | 'construction'): Promise<Category[]> => {
@@ -150,4 +167,14 @@ export const getTestimonials = async (): Promise<Testimonial[]> => {
 export const getTestimonialById = async (id: string): Promise<Testimonial | undefined> => {
     await new Promise(resolve => setTimeout(resolve, 500));
     return testimonials.find(t => t.id === id);
+}
+
+export const getHeroImages = async (): Promise<HeroImage[]> => {
+    await new Promise(resolve => setTimeout(resolve, 500));
+    return [...heroImages];
+};
+
+export const getHeroImageById = async (id: string): Promise<HeroImage | undefined> => {
+    await new Promise(resolve => setTimeout(resolve, 500));
+    return heroImages.find(h => h.id === id);
 }

@@ -38,3 +38,18 @@ export const testimonialSchema = z
       path: ['mediaType'],
     }
   );
+
+export const heroImageSchema = z.object({
+  id: z.string().optional(),
+  title: z
+    .string()
+    .min(3, { message: 'Title must be at least 3 characters long.' })
+    .optional()
+    .or(z.literal('')),
+  imageUrl: z.string().url({ message: 'Please enter a valid image URL.' }),
+  displayOrder: z.coerce
+    .number()
+    .int()
+    .min(0, { message: 'Display order must be a positive number.' }),
+  isActive: z.boolean().default(true),
+});

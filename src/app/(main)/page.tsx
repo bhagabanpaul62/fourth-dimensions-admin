@@ -1,7 +1,7 @@
 import { PageHeader } from "@/components/page-header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getCategories, getContactRequests, getQuotationRequests, getTestimonials } from "@/lib/data";
-import { Building2, ClipboardList, Inbox, Sofa, Star } from "lucide-react";
+import { getCategories, getContactRequests, getQuotationRequests, getTestimonials, getHeroImages } from "@/lib/data";
+import { Building2, ClipboardList, Inbox, Sofa, Star, Image as ImageIcon } from "lucide-react";
 
 export default async function DashboardPage() {
   const interiorCount = (await getCategories("interior")).length;
@@ -9,11 +9,13 @@ export default async function DashboardPage() {
   const testimonialCount = (await getTestimonials()).length;
   const contactCount = (await getContactRequests()).length;
   const quotationCount = (await getQuotationRequests()).length;
+  const heroImageCount = (await getHeroImages()).length;
 
   const stats = [
     { title: "Interior Categories", value: interiorCount, icon: Sofa },
     { title: "Construction Categories", value: constructionCount, icon: Building2 },
     { title: "Testimonials", value: testimonialCount, icon: Star },
+    { title: "Hero Images", value: heroImageCount, icon: ImageIcon },
     { title: "Contact Requests", value: contactCount, icon: Inbox },
     { title: "Quotation Requests", value: quotationCount, icon: ClipboardList },
   ];
