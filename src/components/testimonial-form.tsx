@@ -138,6 +138,36 @@ export function TestimonialForm({ initialData }: TestimonialFormProps) {
                         }}
                         />
                   )}
+                  {mediaType === 'video' && mediaUrl && (
+                    <>
+                      {/* YouTube embed */}
+                      {mediaUrl.includes('youtube.com') || mediaUrl.includes('youtu.be') ? (
+                        <iframe
+                          width="200"
+                          height="120"
+                          src={
+                            mediaUrl.includes('youtube.com')
+                              ? mediaUrl.replace('watch?v=', 'embed/')
+                              : `https://www.youtube.com/embed/${mediaUrl.split('/').pop()}`
+                          }
+                          title="YouTube video"
+                          frameBorder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                          className="rounded-md"
+                        />
+                      ) : (
+                        // Generic video file
+                        <video
+                          width={200}
+                          height={120}
+                          controls
+                          className="rounded-md"
+                          src={mediaUrl}
+                        />
+                      )}
+                    </>
+                  )}
                   <FormField
                     control={form.control}
                     name="mediaType"

@@ -9,7 +9,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "electron": "electron electron.js",
+    "export": "next export"
   },
   "dependencies": {
     "@genkit-ai/googleai": "^1.13.0",
@@ -42,6 +44,7 @@
     "date-fns": "^3.6.0",
     "embla-carousel-react": "^8.6.0",
     "firebase": "^11.9.1",
+    "formidable": "^3.5.4",
     "genkit": "^1.13.0",
     "lucide-react": "^0.475.0",
     "mongodb": "^6.8.0",
@@ -57,10 +60,12 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@types/formidable": "^3.4.5",
     "@types/mongodb": "^4.0.7",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "electron": "^37.2.0",
     "genkit-cli": "^1.13.0",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",

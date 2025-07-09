@@ -15,7 +15,7 @@ export default async function EditInteriorCategoryPage({ params }: { params: { i
     return (
       <div>
         <PageHeader title="Edit Interior Category" />
-        <CategoryForm categoryType="interior" initialData={category} />
+        <CategoryForm categoryType="INTERIOR" initialData={category} />
       </div>
     );
   } catch (error) {

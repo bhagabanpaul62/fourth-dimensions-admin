@@ -104,7 +104,7 @@ export function CategoriesDataTable({ data, categoryType }: CategoriesDataTableP
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem asChild>
-                  <Link href={`/${categoryType}/${category.id}/edit`}>Edit</Link>
+                  <Link href={`/${categoryType.toLowerCase()}/${category.id}/edit`}>Edit</Link>
                 </DropdownMenuItem>
                 <AlertDialogTrigger asChild>
                   <DropdownMenuItem className="text-destructive" onSelect={(e) => e.preventDefault()}>

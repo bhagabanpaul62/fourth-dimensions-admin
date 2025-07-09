@@ -25,7 +25,7 @@ export default async function InteriorPage() {
           <CardTitle>Manage Interior Services</CardTitle>
         </CardHeader>
         <CardContent>
-          <CategoriesDataTable data={data} categoryType="interior" />
+          <CategoriesDataTable data={data} categoryType="INTERIOR" />
         </CardContent>
       </Card>
     </div>

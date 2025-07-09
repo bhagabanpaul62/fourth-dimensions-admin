@@ -15,7 +15,7 @@ export default async function EditConstructionCategoryPage({ params }: { params:
     return (
       <div>
         <PageHeader title="Edit Construction Category" />
-        <CategoryForm categoryType="construction" initialData={category} />
+        <CategoryForm categoryType="CONSTRUCTION" initialData={category} />
       </div>
     );
   } catch (error) {

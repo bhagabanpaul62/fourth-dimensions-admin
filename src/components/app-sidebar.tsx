@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/sidebar';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Building2, Inbox, ClipboardList, Sofa, DraftingCompass, Star, Image as ImageIcon } from 'lucide-react';
+import { LayoutDashboard, Building2, Inbox, ClipboardList, Sofa, DraftingCompass, Star, Image as ImageIcon, Upload } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const menuItems = [
@@ -23,6 +23,7 @@ const menuItems = [
   { href: '/hero-images', label: 'Hero Images', icon: ImageIcon },
   { href: '/contact-requests', label: 'Contact Requests', icon: Inbox },
   { href: '/quotation-requests', label: 'Quotation Requests', icon: ClipboardList },
+  { href: '/uploads', label: 'Uploads', icon: Upload },
 ];
 
 export function AppSidebar() {
