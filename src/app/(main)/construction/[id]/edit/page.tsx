@@ -6,7 +6,7 @@ import { DbErrorAlert } from '@/components/db-error-alert';
 
 export default async function EditConstructionCategoryPage({ params }: { params: { id: string } }) {
   try {
-    const category = await getCategoryById('construction', params.id);
+    const category = await getCategoryById('CONSTRUCTION', params.id);
 
     if (!category) {
       notFound();

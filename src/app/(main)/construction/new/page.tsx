@@ -5,7 +5,7 @@ export default function NewConstructionCategoryPage() {
   return (
     <div>
       <PageHeader title="New Construction Category" />
-      <CategoryForm categoryType="construction" />
+      <CategoryForm categoryType="CONSTRUCTION" />
     </div>
   );
 }

@@ -71,7 +71,7 @@ export function QuotationRequestsDataTable({ data }: QuotationRequestsDataTableP
   
   const columns: ColumnDef<QuotationRequest>[] = [
     {
-      accessorKey: 'fullName',
+      accessorKey: 'name',
       header: ({ column }) => (
         <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
           Full Name
@@ -82,10 +82,10 @@ export function QuotationRequestsDataTable({ data }: QuotationRequestsDataTableP
     { accessorKey: 'email', header: 'Email' },
     { accessorKey: 'phone', header: 'Phone' },
     { accessorKey: 'propertyType', header: 'Property Type' },
-    { accessorKey: 'budgetRange', header: 'Budget' },
+    { accessorKey: 'budget', header: 'Budget' },
     { accessorKey: 'state', header: 'State' },
     { accessorKey: 'district', header: 'District' },
-    { accessorKey: 'type', header: 'Type', cell: ({row}) => <Badge variant="secondary" className="capitalize">{row.original.type}</Badge> },
+    // { accessorKey: 'type', header: 'Type', cell: ({row}) => <Badge variant="secondary" className="capitalize">{row.original.type}</Badge> },
     {
       accessorKey: 'submittedAt',
       header: 'Submitted At',

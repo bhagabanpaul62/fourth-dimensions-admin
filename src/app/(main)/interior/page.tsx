@@ -9,7 +9,7 @@ export default async function InteriorPage() {
   let dbError = null;
 
   try {
-    data = await getCategories('interior');
+    data = await getCategories('INTERIOR');
   } catch (error) {
     dbError = error;
   }

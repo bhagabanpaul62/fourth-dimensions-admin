@@ -9,7 +9,7 @@ export default async function ConstructionPage() {
   let dbError = null;
 
   try {
-    data = await getCategories('construction');
+    data = await getCategories('CONSTRUCTION');
   } catch (error) {
     dbError = error;
   }
@@ -25,7 +25,7 @@ export default async function ConstructionPage() {
             <CardTitle>Manage Construction Services</CardTitle>
         </CardHeader>
         <CardContent>
-            <CategoriesDataTable data={data} categoryType="construction" />
+            <CategoriesDataTable data={data} categoryType="CONSTRUCTION" />
         </CardContent>
       </Card>
     </div>

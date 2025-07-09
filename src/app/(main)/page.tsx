@@ -23,8 +23,8 @@ export default async function DashboardPage() {
       quotationRequests,
       heroImages
     ] = await Promise.all([
-      getCategories("interior"),
-      getCategories("construction"),
+      getCategories("INTERIOR"),
+      getCategories("CONSTRUCTION"),
       getTestimonials(),
       getContactRequests(),
       getQuotationRequests(),

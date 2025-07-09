@@ -5,7 +5,7 @@ export default function NewInteriorCategoryPage() {
   return (
     <div>
       <PageHeader title="New Interior Category" />
-      <CategoryForm categoryType="interior" />
+      <CategoryForm categoryType="INTERIOR" />
     </div>
   );
 }
