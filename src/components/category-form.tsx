@@ -143,9 +143,9 @@ export function CategoryForm({ categoryType, initialData }: CategoryFormProps) {
                       {...field}
                     >
                       <option value="">Select a category</option>
-                      <option value="HOUSES">Houses</option>
-                      <option value="APARTMENT">Apartment</option>
-                      <option value="RESTAURANT">Restaurant</option>
+                      <option value="COMMERCIAL">Commercial</option>
+                      <option value="RESIDENTIAL">Residential</option>
+                      
                     </select>
                   </FormControl>
                   <FormMessage />
